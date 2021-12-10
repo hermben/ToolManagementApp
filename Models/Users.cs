@@ -17,7 +17,7 @@ namespace ToolManagementApp.Models
 
         public string address { get; set; }
 
-        public DateTime registrationDate { get; set; }
+        public string registrationDate { get; set; }
 
         public Boolean isAdmin { get; set; }
     }

@@ -25,7 +25,8 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"select UserID, Name, Email, password, Address, RegistrationDate, IsAdmin from dbo.Users";
+            string query = @"select UserID, Name, Email, password, Address,
+                            convert(varchar(10),RegistrationDate,120)as RegistrationDate, IsAdmin from dbo.Users";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -62,7 +63,7 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ItemName", user.name);
+                    myCommand.Parameters.AddWithValue("@Name", user.name);
                     myCommand.Parameters.AddWithValue("@Email", user.email);
                     myCommand.Parameters.AddWithValue("@Password", user.password);
                     myCommand.Parameters.AddWithValue("@Address", user.address);
