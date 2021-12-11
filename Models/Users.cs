@@ -20,5 +20,7 @@ namespace ToolManagementApp.Models
         public string registrationDate { get; set; }
 
         public Boolean isAdmin { get; set; }
+
+        public string photofilename { get; set; }
     }
 }

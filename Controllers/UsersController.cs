@@ -55,8 +55,8 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"insert into dbo.Users
-                             (Name,Email, password,Address,RegistrationDate,IsAdmin)
-                          values(@Name,@Email, @Password,@Address,@RegistrationDate,@IsAdmin)
+                             (Name,Email, password,Address,RegistrationDate,IsAdmin,PhotoFileName)
+                          values(@Name,@Email, @Password,@Address,@RegistrationDate,@IsAdmin,@PhotoFileName)
                                 ";
 
             DataTable table = new DataTable();
@@ -73,6 +73,7 @@ namespace ToolManagementApp.Controllers
                     myCommand.Parameters.AddWithValue("@Address", user.address);
                     myCommand.Parameters.AddWithValue("@RegistrationDate", user.registrationDate);
                     myCommand.Parameters.AddWithValue("@IsAdmin", user.registrationDate);
+                    myCommand.Parameters.AddWithValue("@PhotoFileName", user.photofilename);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
