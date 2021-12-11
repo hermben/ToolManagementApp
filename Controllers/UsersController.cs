@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace ToolManagementApp.Controllers
 {
@@ -16,9 +18,11 @@ namespace ToolManagementApp.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public UsersController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public UsersController(IConfiguration configuration,IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         [HttpGet]
@@ -26,7 +30,7 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"select UserID, Name, Email, password, Address,
-                            convert(varchar(10),RegistrationDate,120)as RegistrationDate, IsAdmin from dbo.Users";
+                            convert(varchar(8),RegistrationDate,120)as RegistrationDate, IsAdmin from dbo.Users";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -144,6 +148,35 @@ namespace ToolManagementApp.Controllers
             }
 
             return new JsonResult("successfully deleted");
+        }
+
+        [Route("SaveFile")]
+        [HttpPost]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var physicalpath = _env.ContentRootPath + "/Photos" + filename;
+
+                using (var stream=new FileStream(physicalpath, FileMode.Create))
+                {
+
+                    postedFile.CopyTo(stream);
+                }
+                return new JsonResult(filename);
+
+            }
+            catch (Exception)
+            {
+                return new JsonResult("anonymous.png");
+
+            }
+
+
+
         }
     }
 }
