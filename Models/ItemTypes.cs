@@ -13,7 +13,7 @@ namespace ToolManagementApp.Models
     {
         public int itemTypeID { get; set; }
 
-        public int itemTypeName { get; set; }
+        public string itemTypeName { get; set; }
 
     }
 }

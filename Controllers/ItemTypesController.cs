@@ -8,6 +8,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace ToolManagementApp.Controllers
 {
@@ -16,16 +18,18 @@ namespace ToolManagementApp.Controllers
     public class ItemTypesController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public ItemTypesController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public ItemTypesController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         [HttpGet]
         public JsonResult Get()
         {
 
-            string query = @"select ItemTypesID, ItemTypesName from dbo.SubItems";
+            string query = @"select ItemTypeID, ItemTypeName from dbo.ItemTypes";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -46,11 +50,11 @@ namespace ToolManagementApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult Post(ItemTypes itemtype)
+        public JsonResult Post(ItemTypes itemtyp)
         {
 
             string query = @"insert into dbo.ItemTypes
-                            values (@SubItemName)
+                                  values(@ItemTypeName)
                                 ";
 
             DataTable table = new DataTable();
@@ -61,7 +65,7 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ItemTypeName", itemtype.itemTypeName);
+                    myCommand.Parameters.AddWithValue("@ItemTypeName", itemtyp.itemTypeName);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -76,9 +80,9 @@ namespace ToolManagementApp.Controllers
         public JsonResult Put(ItemTypes itemtype)
         {
 
-            string query = @"update dbo.Items
-                            set SubItemName = @SubItemName
-                            where ItemID= @ItemID
+            string query = @"update dbo.ItemTypes
+                            set ItemTypeName = @ItemTypeName
+                            where ItemTypeID= @ItemTypeID
                                 ";
 
             DataTable table = new DataTable();
@@ -89,8 +93,8 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@SubItemID", itemtype.itemTypeID);
-                    myCommand.Parameters.AddWithValue("@SubItemName", itemtype.itemTypeName);
+                    myCommand.Parameters.AddWithValue("@ItemTypeID", itemtype.itemTypeID);
+                    myCommand.Parameters.AddWithValue("@ItemTypeName", itemtype.itemTypeName);
                     
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -106,8 +110,8 @@ namespace ToolManagementApp.Controllers
         public JsonResult Delete(int id)
         {
 
-            string query = @"delete from dbo.Items
-                            where ItemID= @ItemID
+            string query = @"delete from dbo.ItemTypes
+                            where ItemTypeID= @ItemTypeID
                                 ";
 
             DataTable table = new DataTable();
