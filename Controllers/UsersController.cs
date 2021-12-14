@@ -30,7 +30,7 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"select UserID, Name, Email, password, Address,
-                            RegistrationDate, IsAdmin from dbo.Users";
+                            RegistrationDate,IsAdmin,PhotoFileName from dbo.Users";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -94,7 +94,8 @@ namespace ToolManagementApp.Controllers
                                 Password=@Password,
                                 Address=@Address,
                                 RegistrationDate=@RegistrationDate,
-                                IsAdmin=@IsAdmin
+                                IsAdmin=@IsAdmin,
+                                PhotoFileName=@PhotoFileName
                             where UserID= @UserID
                                 ";
 
@@ -113,6 +114,7 @@ namespace ToolManagementApp.Controllers
                     myCommand.Parameters.AddWithValue("@Address", user.address);
                     myCommand.Parameters.AddWithValue("@RegistrationDate", user.registrationDate);
                     myCommand.Parameters.AddWithValue("@IsAdmin", user.isAdmin);
+                    myCommand.Parameters.AddWithValue("@PhotoFileName", user.photofilename);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -160,7 +162,7 @@ namespace ToolManagementApp.Controllers
                 var httpRequest = Request.Form;
                 var postedFile = httpRequest.Files[0];
                 string filename = postedFile.FileName;
-                var physicalpath = _env.ContentRootPath + "/Photos" + filename;
+                var physicalpath = _env.ContentRootPath + "/Photos/" + filename;
 
                 using (var stream=new FileStream(physicalpath, FileMode.Create))
                 {
