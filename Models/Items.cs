@@ -18,5 +18,7 @@ namespace ToolManagementApp.Models
 
         public Boolean IsCheckout { get; set; }
 
+        public int ItemTypeID { get; set; }  
+
     }
 }

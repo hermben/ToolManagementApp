@@ -25,7 +25,9 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"select ItemID, ItemName, ItemSerial, ItemDescription, ischeckout from dbo.Items";
+            //string query = @"select ItemID, ItemName, ItemSerial, ItemDescription, ischeckout from dbo.Items";
+            string query = @"SELECT Items.ItemTypeID, ItemTypes.ItemTypeName,Items.ItemName, Items.ItemID, Items.ItemSerial,Items.ItemDescription,Items.IsCheckout 
+            FROM dbo.Items inner join dbo.ItemTypes ON ItemTypes.ItemTypeID = Items.ItemTypeID";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -50,9 +52,8 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"insert into dbo.Items
-                            values (@ItemName)
-                            values (@ItemSerial)
-                            values (@ItemDescription)
+                                    (ItemName,ItemSerial,ItemDescription,IsCheckout,ItemTypeID)
+                            values (@ItemName,@ItemSerial,@ItemDescription,@IsCheckout,@ItemTypeID)
                                 ";
 
             DataTable table = new DataTable();
@@ -66,7 +67,8 @@ namespace ToolManagementApp.Controllers
                     myCommand.Parameters.AddWithValue("@ItemName", item.ItemName);
                     myCommand.Parameters.AddWithValue("@ItemSerial", item.ItemSerial);
                     myCommand.Parameters.AddWithValue("@ItemDescription", item.ItemDescription);
-                    myReader = myCommand.ExecuteReader();
+                    myCommand.Parameters.AddWithValue("@IsCheckout", item.IsCheckout);
+                    myCommand.Parameters.AddWithValue("@ItemTypeID", item.ItemTypeID);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -82,9 +84,11 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"update dbo.Items
-                            set ItemName = @ItemName
-                            set ItemSerial=@ItemSerial
-                            set ItemDescription=@ItemDescription
+                             set ItemName = @ItemName,
+                                ItemSerial=@ItemSerial,
+                                ItemDescription=@ItemDescription,
+                                IsCheckout=@IsCheckout,
+                                ItemTypeID=@ItemTypeID
                             where ItemID= @ItemID
                                 ";
 
@@ -100,6 +104,8 @@ namespace ToolManagementApp.Controllers
                     myCommand.Parameters.AddWithValue("@ItemName", item.ItemName);
                     myCommand.Parameters.AddWithValue("@ItemSerial", item.ItemSerial);
                     myCommand.Parameters.AddWithValue("@ItemDescription", item.ItemDescription);
+                    myCommand.Parameters.AddWithValue("@IsCheckout", item.IsCheckout);
+                    myCommand.Parameters.AddWithValue("@ItemTypeID", item.ItemTypeID);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
