@@ -25,7 +25,12 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"select CheckoutID, CheckoutTime from dbo.Checkouts";
+            string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.Ischeckin,Items.ItemID,Items.ItemName,Users.UserID,Users.UserName
+                            FROM dbo.checkouts
+	                            inner join dbo.Items 
+		                            ON Items.ItemID=checkouts.ItemID
+	                            inner join dbo.Users 
+	                    	        ON Users.UsersID=Checkouts.UserID";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -49,8 +54,9 @@ namespace ToolManagementApp.Controllers
         public JsonResult Post(Checkouts checkout)
         {
 
-            string query = @"insert into dbo.ItemTypes
-                            values (@SubItemName)
+            string query = @"insert into dbo.checkouts
+			(UserID,ItemID,Ischeckin)
+		values (@UserID,@ItemID,@Ischeckin)
                                 ";
 
             DataTable table = new DataTable();
@@ -61,7 +67,8 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@CheckoutTime", checkout.CheckoutTime);
+                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
+                    myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
                     myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -78,7 +85,7 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"update dbo.Items
-                            set CheckoutTime = @CheckoutTime
+                            set UserID = @UserID
                             where CheckoutID= @CheckoutID
                                 ";
 
@@ -90,7 +97,9 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@CheckoutTime", checkout.CheckoutID);
+                    myCommand.Parameters.AddWithValue("@CheckoutID", checkout.CheckoutID);
+                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
+                    myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
                     myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
 
                     myReader = myCommand.ExecuteReader();
