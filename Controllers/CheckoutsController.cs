@@ -25,12 +25,15 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.Ischeckin,Items.ItemID,Items.ItemName,Users.UserID,Users.UserName
+            string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Users.UserID,Users.Name
                             FROM dbo.checkouts
 	                            inner join dbo.Items 
 		                            ON Items.ItemID=checkouts.ItemID
 	                            inner join dbo.Users 
-	                    	        ON Users.UsersID=Checkouts.UserID";
+	                    	        ON Users.UserID=Checkouts.UserID
+                                outer join dbo.Checkins
+                                    ON Checkins.CheckinID= Checkouts.CheckinID
+                                            ";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -56,7 +59,7 @@ namespace ToolManagementApp.Controllers
 
             string query = @"insert into dbo.checkouts
 			(UserID,ItemID,Ischeckin)
-		values (@UserID,@ItemID,@Ischeckin)
+		       values (@UserID,@ItemID,@Ischeckin)
                                 ";
 
             DataTable table = new DataTable();
@@ -69,7 +72,7 @@ namespace ToolManagementApp.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
                     myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
-                    myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
+                    myCommand.Parameters.AddWithValue("@IsCheckin", 0);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
