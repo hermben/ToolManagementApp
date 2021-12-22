@@ -25,7 +25,7 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"select CheckinID, CheckinTime,UserSignature from dbo.Checkins";
+            string query = @"select CheckinID, CheckinTime,UserSignature,CheckoutID,UserID from dbo.Checkins";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -50,7 +50,8 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"insert into dbo.Checkins
-                            values (@checkinTime,@UserSignature)
+                                    (CheckinTime,UserSignature,CheckoutID,UserID)
+                            values (@CheckinTime,@UserSignature,@CheckoutID,@UserID)
                                 ";
 
             DataTable table = new DataTable();
@@ -61,8 +62,10 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@CheckintTime", checkin.checkinTime);
+                    myCommand.Parameters.AddWithValue("@CheckinTime", checkin.checkinTime);
                     myCommand.Parameters.AddWithValue("@UserSignature", checkin.userSignature);
+                    myCommand.Parameters.AddWithValue("@CheckoutID", checkin.checkoutID);
+                    myCommand.Parameters.AddWithValue("@UserID", checkin.UserID);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -78,8 +81,7 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"update dbo.Checkins
-                            set CheckinTime = @CheckintTime,
-                                UserSignature = @UserSignature
+                             set UserSignature = @UserSignature
                             where CheckinID= @CheckinID
                                 ";
 
@@ -92,7 +94,6 @@ namespace ToolManagementApp.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@CheckinID", checkin.checkinID);
-                    myCommand.Parameters.AddWithValue("@CheckinTime", checkin.checkinTime);
                     myCommand.Parameters.AddWithValue("@UserSignature", checkin.userSignature);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);

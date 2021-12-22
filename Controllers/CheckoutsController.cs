@@ -25,15 +25,14 @@ namespace ToolManagementApp.Controllers
         public JsonResult Get()
         {
 
-            string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Users.UserID,Users.Name
+            string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Users.UserID,Users.Name, Checkins.CheckinTime,Checkins.UserSignature
                             FROM dbo.checkouts
 	                            inner join dbo.Items 
 		                            ON Items.ItemID=checkouts.ItemID
 	                            inner join dbo.Users 
 	                    	        ON Users.UserID=Checkouts.UserID
-                                outer join dbo.Checkins
-                                    ON Checkins.CheckinID= Checkouts.CheckinID
-                                            ";
+                                LEFT JOIN dbo.Checkins
+                                    ON Checkouts.CheckoutID = Checkins.CheckoutID";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
