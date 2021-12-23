@@ -50,8 +50,8 @@ namespace ToolManagementApp.Controllers
         {
 
             string query = @"insert into dbo.Checkins
-                                    (CheckinTime,UserSignature,CheckoutID,UserID)
-                            values (@CheckinTime,@UserSignature,@CheckoutID,@UserID)
+                                    (UserSignature,CheckoutID,UserID)
+                            values (@UserSignature,@CheckoutID,@UserID)
                                 ";
 
             DataTable table = new DataTable();
@@ -62,7 +62,6 @@ namespace ToolManagementApp.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@CheckinTime", checkin.checkinTime);
                     myCommand.Parameters.AddWithValue("@UserSignature", checkin.userSignature);
                     myCommand.Parameters.AddWithValue("@CheckoutID", checkin.checkoutID);
                     myCommand.Parameters.AddWithValue("@UserID", checkin.UserID);
