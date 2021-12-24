@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
+using ToolManagementApp.Entity;
 
 namespace ToolManagementApp.Controllers
 {
@@ -16,15 +17,17 @@ namespace ToolManagementApp.Controllers
     public class CheckoutsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private CheckoutsEntity checkoutEntity;
         public CheckoutsController(IConfiguration configuration)
         {
             _configuration = configuration;
+            checkoutEntity = new CheckoutsEntity(configuration);
         }
 
         [HttpGet]
         public JsonResult Get()
         {
-
+            /*
             string query = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Users.UserID,Users.Name, Checkins.CheckinTime,Checkins.UserSignature
                             FROM dbo.checkouts
 	                            inner join dbo.Items 
@@ -48,97 +51,95 @@ namespace ToolManagementApp.Controllers
                     myCon.Close();
                 }
             }
+            return new JsonResult(checkouts);
+            */
 
-            return new JsonResult(table);
+
+
+
+            var checkouts = this.checkoutEntity.GetAll();
+
+            return new JsonResult(checkouts);
         }
 
         [HttpPost]
         public JsonResult Post(Checkouts checkout)
         {
 
-            string query = @"insert into dbo.checkouts
-			(UserID,ItemID,Ischeckin)
-		       values (@UserID,@ItemID,@Ischeckin)
-                                ";
+            //         string query = @"insert into dbo.checkouts
+            //(UserID,ItemID,Ischeckin)
+            //      values (@UserID,@ItemID,@Ischeckin)
+            //                             ";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
-                    myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
-                    myCommand.Parameters.AddWithValue("@IsCheckin", 0);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //         DataTable table = new DataTable();
+            //         string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //         SqlDataReader myReader;
+            //         using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //         {
+            //             myCon.Open();
+            //             using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //             {
+            //                 myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
+            //                 myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
+            //                 myCommand.Parameters.AddWithValue("@IsCheckin", 0);
+            //                 myReader = myCommand.ExecuteReader();
+            //                 table.Load(myReader);
+            //                 myReader.Close();
+            //                 myCon.Close();
+            //             }
+            //         }
 
-            return new JsonResult("Added Successfully");
+            this.checkoutEntity.Post(checkout);
+
+            return new JsonResult("Posted Successfully");
         }
 
         [HttpPut]
         public JsonResult Put(Checkouts checkout)
         {
 
-            string query = @"update dbo.Items
-                            set UserID = @UserID
-                            where CheckoutID= @CheckoutID
-                                ";
+            //string query = @"update dbo.Items
+            //                set UserID = @UserID
+            //                where CheckoutID= @CheckoutID
+            //";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@CheckoutID", checkout.CheckoutID);
-                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
-                    myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
-                    myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
+            //DataTable table = new DataTable();
+            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //SqlDataReader myReader;
+            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //{
+            //    myCon.Open();
+            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //    {
+            //        myCommand.Parameters.AddWithValue("@CheckoutID", checkout.CheckoutID);
+            //        myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
+            //        myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
+            //        myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
 
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //        myReader = myCommand.ExecuteReader();
+            //        table.Load(myReader);
+            //        myReader.Close();
+            //        myCon.Close();
+            //    }
+            //}
 
-            return new JsonResult("Updated Successfully");
+            //return new JsonResult("Updated Successfully");
+
+            this.checkoutEntity.Put(checkout);
+
+            return new JsonResult("Posted Successfully");
         }
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
 
-            string query = @"delete from dbo.Checkouts
-                            where CheckoutID= @CheckoutID
-                                ";
+            //string query = @"delete from dbo.Checkouts
+            ////                where CheckoutID= @CheckoutID
+            //                    ";
+            this.checkoutEntity.Delete(id);
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@CheckoutID", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult("successfully deleted");
+            return new JsonResult("Posted Successfully");
         }
     }
 }
