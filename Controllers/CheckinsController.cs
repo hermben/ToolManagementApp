@@ -8,7 +8,6 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
-using ToolManagementApp.Entity;
 
 namespace ToolManagementApp.Controllers
 {
@@ -118,9 +117,9 @@ namespace ToolManagementApp.Controllers
         public JsonResult Delete(int id)
         {
 
-            string query = @"delete from dbo.Checkins
-                            where CheckinID= @CheckinID
-                                ";
+            //string query = @"delete from dbo.Checkins
+            //                where CheckinID= @CheckinID
+            //                    ";
 
             //DataTable table = new DataTable();
             //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");

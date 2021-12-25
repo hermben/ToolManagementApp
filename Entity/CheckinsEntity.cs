@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ToolManagementApp.Entity
 {
-    public class ItemsEntity
+    public class CheckinsEntity
     {
         string GetAllQuery = @"select CheckinID, CheckinTime,UserSignature,CheckoutID,UserID from dbo.Checkins";
 
@@ -30,7 +30,7 @@ namespace ToolManagementApp.Entity
 
         private readonly IConfiguration _configuration;
 
-        public ItemsEntity(IConfiguration configuration)
+        public CheckinsEntity(IConfiguration configuration)
         {
             _configuration = configuration;
         }

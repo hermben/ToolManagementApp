@@ -35,18 +35,18 @@ namespace ToolManagementApp.Entity
                                 ";
 
 
-        private readonly IConfiguration _configutation;
+        private readonly IConfiguration _configuration;
 
         public ItemsEntity(IConfiguration configuration)
         {
-            _configutation = configuration;
+            _configuration = configuration;
         }
 
         public DataTable GetAll()
         {
 
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            string sqlDataSource = this._configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
@@ -64,10 +64,10 @@ namespace ToolManagementApp.Entity
 
         }
 
-        public DataTable Post(items item)
+        public DataTable Post(Items item)
         {
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            string sqlDataSource = this._configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {

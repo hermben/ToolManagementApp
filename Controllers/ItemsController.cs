@@ -17,11 +17,11 @@ namespace ToolManagementApp.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private itemsEntity itemEntity;
+        private ItemsEntity itemEntity;
         public ItemsController(IConfiguration configuration)
         {
             _configuration = configuration;
-           itemEntity = new itemsEntity(configuration);
+           itemEntity = new ItemsEntity(configuration);
         }
 
         [HttpGet]
@@ -49,7 +49,7 @@ namespace ToolManagementApp.Controllers
 
             //return new JsonResult(table);
             var items = this.itemEntity.GetAll();
-            return new JsonResult(Items);
+            return new JsonResult(items);
         }
 
         [HttpPost]
