@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using ToolManagementApp.Entity;
 
 namespace ToolManagementApp.Controllers
 {
@@ -19,118 +20,133 @@ namespace ToolManagementApp.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
+        private ItemTypesEntity itemTypesEntity;
+
+        public object ItemTypesEntity { get; private set; }
+
         public ItemTypesController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
             _env = env;
+            itemTypesEntity = new ItemTypesEntity(configuration);
         }
 
         [HttpGet]
         public JsonResult Get()
         {
 
-            string query = @"select ItemTypeID, ItemTypeName from dbo.ItemTypes";
+            //string GetAllQuery = @"select ItemTypeID, ItemTypeName from dbo.ItemTypes";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //string query = @"select ItemTypeID, ItemTypeName from dbo.ItemTypes";
 
-            return new JsonResult(table);
+            //DataTable table = new DataTable();
+            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //SqlDataReader myReader;
+            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //{
+            //    myCon.Open();
+            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //    {
+            //        myReader = myCommand.ExecuteReader();
+            //        table.Load(myReader);
+            //        myReader.Close();
+            //        myCon.Close();
+            //    }
+            //}
+
+            //return new JsonResult(table);
+            var ItemTypes = this.itemTypesEntity.GetAll();
+            return new JsonResult(ItemTypes);
         }
 
         [HttpPost]
         public JsonResult Post(ItemTypes itemtyp)
         {
 
-            string query = @"insert into dbo.ItemTypes
-                                  values(@ItemTypeName)
-                                ";
+            //string query = @"insert into dbo.ItemTypes
+            //                      values(@ItemTypeName)
+            //                    ";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@ItemTypeName", itemtyp.itemTypeName);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //DataTable table = new DataTable();
+            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //SqlDataReader myReader;
+            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //{
+            //    myCon.Open();
+            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //    {
+            //        myCommand.Parameters.AddWithValue("@ItemTypeName", itemtyp.itemTypeName);
+            //        myReader = myCommand.ExecuteReader();
+            //        table.Load(myReader);
+            //        myReader.Close();
+            //        myCon.Close();
+            //    }
+            //}
 
-            return new JsonResult("Added Successfully");
+            //return new JsonResult("Added Successfully");
+            this.itemTypesEntity.Post(itemtyp);
+            return new JsonResult("Posted Successfully");
         }
 
         [HttpPut]
         public JsonResult Put(ItemTypes itemtype)
         {
 
-            string query = @"update dbo.ItemTypes
-                            set ItemTypeName = @ItemTypeName
-                            where ItemTypeID= @ItemTypeID
-                                ";
+            //string query = @"update dbo.ItemTypes
+            //                set ItemTypeName = @ItemTypeName
+            //                where ItemTypeID= @ItemTypeID
+            //                    ";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@ItemTypeID", itemtype.itemTypeID);
-                    myCommand.Parameters.AddWithValue("@ItemTypeName", itemtype.itemTypeName);
-                    
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //DataTable table = new DataTable();
+            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //SqlDataReader myReader;
+            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //{
+            //    myCon.Open();
+            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //    {
+            //        myCommand.Parameters.AddWithValue("@ItemTypeID", itemtype.itemTypeID);
+            //        myCommand.Parameters.AddWithValue("@ItemTypeName", itemtype.itemTypeName);
 
-            return new JsonResult("Updated Successfully");
+            //        myReader = myCommand.ExecuteReader();
+            //        table.Load(myReader);
+            //        myReader.Close();
+            //        myCon.Close();
+            //    }
+            //}
+
+            //return new JsonResult("Updated Successfully");
+            this.itemTypesEntity.Put(itemtype);
+            return new JsonResult("Posted Successfully");
         }
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
 
-            string query = @"delete from dbo.ItemTypes
-                            where ItemTypeID= @ItemTypeID
-                                ";
+            //string query = @"delete from dbo.ItemTypes
+            //                where ItemTypeID= @ItemTypeID
+            //                    ";
 
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
-                {
-                    myCommand.Parameters.AddWithValue("@ItemTypeID", id);
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader);
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
+            //DataTable table = new DataTable();
+            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            //SqlDataReader myReader;
+            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            //{
+            //    myCon.Open();
+            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
+            //    {
+            //        myCommand.Parameters.AddWithValue("@ItemTypeID", id);
+            //        myReader = myCommand.ExecuteReader();
+            //        table.Load(myReader);
+            //        myReader.Close();
+            //        myCon.Close();
+            //    }
+            //}
 
-            return new JsonResult("successfully deleted");
+            //return new JsonResult("successfully deleted");
+            this.itemTypesEntity.Delete(id);
+            return new JsonResult("Posted Successfully");
         }
     }
 }
