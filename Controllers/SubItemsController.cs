@@ -27,25 +27,6 @@ namespace ToolManagementApp.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-
-            //string query = @"select SubItemID, SubItemName,SubItemDescription from dbo.SubItems";
-
-            //DataTable table = new DataTable();
-            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            //SqlDataReader myReader;
-            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            //{
-            //    myCon.Open();
-            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-            //    {
-            //        myReader = myCommand.ExecuteReader();
-            //        table.Load(myReader);
-            //        myReader.Close();
-            //        myCon.Close();
-            //    }
-            //}
-
-            //return new JsonResult(table);
             var subItems = this.subItemsEntity.GetAll();
             return new JsonResult(subItems);
         }
@@ -53,29 +34,6 @@ namespace ToolManagementApp.Controllers
         [HttpPost]
         public JsonResult Post(SubItems subitem)
         {
-
-            //string query = @"insert into dbo.Items
-            //                values (@SubItemName)
-            //                    ";
-
-            //DataTable table = new DataTable();
-            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            //SqlDataReader myReader;
-            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            //{
-            //    myCon.Open();
-            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-            //    {
-            //        myCommand.Parameters.AddWithValue("@ItemName", subitem.subItemName);
-            //        myCommand.Parameters.AddWithValue("@ItemName", subitem.subItemDescription);
-            //        myReader = myCommand.ExecuteReader();
-            //        table.Load(myReader);
-            //        myReader.Close();
-            //        myCon.Close();
-            //    }
-            //}
-
-            //return new JsonResult("Added Successfully");
             this.subItemsEntity.Post(subitem);
             return new JsonResult("Posted Successfully");
         }
@@ -83,32 +41,6 @@ namespace ToolManagementApp.Controllers
         [HttpPut]
         public JsonResult Put(SubItems subitem)
         {
-
-            //string query = @"update dbo.Items
-            //                set SubItemName = @SubItemName,
-            //                    SubItemDescription=@SubItemDescription
-            //                where ItemID= @ItemID
-            //                    ";
-
-            //DataTable table = new DataTable();
-            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            //SqlDataReader myReader;
-            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            //{
-            //    myCon.Open();
-            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-            //    {
-            //        myCommand.Parameters.AddWithValue("@SubItemID", subitem.subItemID);
-            //        myCommand.Parameters.AddWithValue("@SubItemName",subitem.subItemName);
-            //        myCommand.Parameters.AddWithValue("@SubItemName", subitem.subItemDescription);
-            //        myReader = myCommand.ExecuteReader();
-            //        table.Load(myReader);
-            //        myReader.Close();
-            //        myCon.Close();
-            //    }
-            //}
-
-            //return new JsonResult("Updated Successfully");
             this.subItemsEntity.Put(subitem);
             return new JsonResult("Posted Successfully");
         }
@@ -116,28 +48,6 @@ namespace ToolManagementApp.Controllers
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
-
-            //string query = @"delete from dbo.Items
-            //                where ItemID= @ItemID
-            //                    ";
-
-            //DataTable table = new DataTable();
-            //string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-            //SqlDataReader myReader;
-            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            //{
-            //    myCon.Open();
-            //    using (SqlCommand myCommand = new SqlCommand(query, myCon))
-            //    {
-            //        myCommand.Parameters.AddWithValue("@ItemID", id);
-            //        myReader = myCommand.ExecuteReader();
-            //        table.Load(myReader);
-            //        myReader.Close();
-            //        myCon.Close();
-            //    }
-            //}
-
-            //return new JsonResult("successfully deleted");
             this.subItemsEntity.Delete(id);
             return new JsonResult("Posted Successfully");
         }
