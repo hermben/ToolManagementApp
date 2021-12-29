@@ -15,10 +15,13 @@ namespace ToolManagementApp.Models
         public int checkinID { get; set; }
 
         public int checkinTime { get; set; }
+
         public string  userSignature {get; set; }
 
         public string checkoutID { get; set; }
 
-        public string UserID { get; set; }
+        public string UserName { get; set; }
+
+        public string UserEmail { get; set; }
     }
 }

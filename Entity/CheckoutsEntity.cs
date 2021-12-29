@@ -13,23 +13,21 @@ namespace ToolManagementApp.Entity
     public class CheckoutsEntity
     {
 
-        string GetAllQuery = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Users.UserID,Users.Name, Checkins.CheckinTime,Checkins.UserSignature
+        string GetAllQuery = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,checkouts.UserName, checkouts.UserEmail, Checkins.CheckinTime,Checkins.UserSignature
                             FROM dbo.checkouts
 	                            inner join dbo.Items 
 		                            ON Items.ItemID=checkouts.ItemID
-	                            inner join dbo.Users 
-	                    	        ON Users.UserID=Checkouts.UserID
                                 LEFT JOIN dbo.Checkins
                                     ON Checkouts.CheckoutID = Checkins.CheckoutID";
 
 
         string PostQuery = @"insert into dbo.checkouts
-			(UserID,ItemID,Ischeckin)
-		       values (@UserID,@ItemID,@Ischeckin)";
+			(UserName, UserEmail,ItemID,IsCheckin)
+		       values (@UserName, @UserEmail,@ItemID,@IsCheckin)";
 
 
-        string PutQuery =  @"update dbo.Items
-                            set UserID = @UserID
+        string PutQuery = @"update dbo.checkouts
+                            set ItemID = @ItemID, IsCheckin=@IsCheckin
                             where CheckoutID = @CheckoutID ";
 
         string DeleteQuery = @"delete from dbo.Checkouts
@@ -74,7 +72,8 @@ namespace ToolManagementApp.Entity
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(PostQuery, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
+                    myCommand.Parameters.AddWithValue("@UserName", checkout.UserName);
+                    myCommand.Parameters.AddWithValue("@UserEmail", checkout.UserEmail);
                     myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
                     myCommand.Parameters.AddWithValue("@IsCheckin", 0);
                     myReader = myCommand.ExecuteReader();
@@ -98,7 +97,6 @@ namespace ToolManagementApp.Entity
                 using (SqlCommand myCommand = new SqlCommand(PutQuery, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@CheckoutID", checkout.CheckoutID);
-                    myCommand.Parameters.AddWithValue("@UserID", checkout.UserID);
                     myCommand.Parameters.AddWithValue("@ItemID", checkout.ItemID);
                     myCommand.Parameters.AddWithValue("@IsCheckin", checkout.IsCheckin);
 

@@ -12,12 +12,12 @@ namespace ToolManagementApp.Entity
 {
     public class CheckinsEntity
     {
-        string GetAllQuery = @"select CheckinID, CheckinTime,UserSignature,CheckoutID,UserID from dbo.Checkins";
+        string GetAllQuery = @"select CheckinID, CheckinTime,UserSignature,CheckoutID,UserName, UserEmail from dbo.Checkins";
 
 
         string PostQuery = @"insert into dbo.Checkins
-                                    (UserSignature,CheckoutID,UserID)
-                            values (@UserSignature,@CheckoutID,@UserID)
+                                    (UserSignature,CheckoutID,UserName, UserEmail)
+                            values (@UserSignature,@CheckoutID,@UserName, @UserEmail)
                                 ";
         string PutQuery = @"update dbo.Checkins
                              set UserSignature = @UserSignature
@@ -70,7 +70,8 @@ namespace ToolManagementApp.Entity
                     {
                         myCommand.Parameters.AddWithValue("@UserSignature",checkin.userSignature);
                         myCommand.Parameters.AddWithValue("@CheckoutID", checkin.checkoutID);
-                        myCommand.Parameters.AddWithValue("@UserID", checkin.UserID);
+                        myCommand.Parameters.AddWithValue("@UserName", checkin.UserName);
+                        myCommand.Parameters.AddWithValue("@UserEmail", checkin.UserEmail);
                         myReader = myCommand.ExecuteReader();
                         table.Load(myReader);
                         myReader.Close();
