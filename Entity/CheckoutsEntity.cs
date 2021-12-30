@@ -23,7 +23,8 @@ namespace ToolManagementApp.Entity
 
         string PostQuery = @"insert into dbo.checkouts
 			(UserName, UserEmail,ItemID,IsCheckin)
-		       values (@UserName, @UserEmail,@ItemID,@IsCheckin)";
+		       values (@UserName, @UserEmail,@ItemID,@IsCheckin);
+";
 
 
         string PutQuery = @"update dbo.checkouts

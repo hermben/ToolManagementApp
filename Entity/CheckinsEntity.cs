@@ -17,7 +17,11 @@ namespace ToolManagementApp.Entity
 
         string PostQuery = @"insert into dbo.Checkins
                                     (UserSignature,CheckoutID,UserName, UserEmail)
-                            values (@UserSignature,@CheckoutID,@UserName, @UserEmail)
+                            values (@UserSignature,@CheckoutID,@UserName, @UserEmail);
+                            
+                            update dbo.Checkouts
+                             set IsCheckin = 1
+                            where CheckoutID= @CheckoutID;
                                 ";
         string PutQuery = @"update dbo.Checkins
                              set UserSignature = @UserSignature
