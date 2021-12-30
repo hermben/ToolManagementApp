@@ -45,7 +45,7 @@ Built with
    ```sh
    git clone https://github.com/hermben/Toolmanapp
    ```
-Preferably using Visual Studio Code.
+   Preferably using Visual Studio Code.
 
     
 2.	Install NPM Packages
