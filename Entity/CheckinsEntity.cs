@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using ToolManagementApp.Models;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace ToolManagementApp.Entity
 {
@@ -38,53 +34,48 @@ namespace ToolManagementApp.Entity
         {
             _configuration = configuration;
         }
-
-            public DataTable GetAll() 
+        public DataTable GetAll()
+        {
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
-                DataTable table = new DataTable();
-                string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-                SqlDataReader myReader;
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(GetAllQuery, myCon))
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(GetAllQuery, myCon))
-                    {
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
                 }
-
-                return table;
-
             }
 
+            return table;
+        }
 
-
-            public DataTable Post(Checkins checkin)
+        public DataTable Post(Checkins checkin)
+        {
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
-                DataTable table = new DataTable();
-                string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
-                SqlDataReader myReader;
-                using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(PostQuery, myCon))
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(PostQuery, myCon))
-                    {
-                        myCommand.Parameters.AddWithValue("@UserSignature",checkin.userSignature);
-                        myCommand.Parameters.AddWithValue("@CheckoutID", checkin.checkoutID);
-                        myCommand.Parameters.AddWithValue("@UserName", checkin.UserName);
-                        myCommand.Parameters.AddWithValue("@UserEmail", checkin.UserEmail);
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader);
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    myCommand.Parameters.AddWithValue("@UserSignature", checkin.userSignature);
+                    myCommand.Parameters.AddWithValue("@CheckoutID", checkin.checkoutID);
+                    myCommand.Parameters.AddWithValue("@UserName", checkin.UserName);
+                    myCommand.Parameters.AddWithValue("@UserEmail", checkin.UserEmail);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
                 }
-
-                return table;
             }
+            return table;
+        }
 
         public DataTable Put(Checkins checkin)
         {
@@ -106,12 +97,10 @@ namespace ToolManagementApp.Entity
             }
 
             return table;
-
         }
 
         public DataTable Delete(int id)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -129,12 +118,7 @@ namespace ToolManagementApp.Entity
             }
 
             return table;
-
-
         }
-
-
-        }
-
     }
+}
 

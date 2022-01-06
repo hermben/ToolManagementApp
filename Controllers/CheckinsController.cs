@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
 using ToolManagementApp.Entity;
@@ -35,7 +28,6 @@ namespace ToolManagementApp.Controllers
         [HttpPost]
         public JsonResult Post(Checkins checkin)
         {
-
             this.checkinEntity.Post(checkin);
             return new JsonResult("Posted Successfully");
         }

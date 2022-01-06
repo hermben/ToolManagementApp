@@ -11,7 +11,6 @@ namespace ToolManagementApp.Models
 {
     public class Checkins
     {
-
         public int checkinID { get; set; }
 
         public int checkinTime { get; set; }

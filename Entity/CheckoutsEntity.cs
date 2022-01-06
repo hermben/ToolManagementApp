@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace ToolManagementApp.Entity
 {
@@ -58,12 +54,10 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
         public DataTable Post(Checkouts checkout)
-
         {
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -88,7 +82,6 @@ namespace ToolManagementApp.Entity
 
         public DataTable Put(Checkouts checkout)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -107,13 +100,11 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
         public DataTable Delete(int id)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -129,10 +120,7 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
-       
     }
-
 }

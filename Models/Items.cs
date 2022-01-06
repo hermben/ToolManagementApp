@@ -7,7 +7,6 @@ namespace ToolManagementApp.Models
 {
     public class Items
     {
-
         public int ItemID { get; set; }
 
         public string ItemName { get; set; }
@@ -18,7 +17,6 @@ namespace ToolManagementApp.Models
 
         public Boolean IsCheckout { get; set; }
 
-        public int ItemTypeID { get; set; }  
-
+        public int ItemTypeID { get; set; }
     }
 }

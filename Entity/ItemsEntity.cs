@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ToolManagementApp.Entity
 {
     public class ItemsEntity
     {
-
         string GetAllQuery = @"SELECT Items.ItemTypeID, ItemTypes.ItemTypeName,Items.ItemName, Items.ItemID, Items.ItemSerial,Items.ItemDescription,Items.IsCheckout 
             FROM dbo.Items inner join dbo.ItemTypes ON ItemTypes.ItemTypeID = Items.ItemTypeID";
 
@@ -44,7 +38,6 @@ namespace ToolManagementApp.Entity
 
         public DataTable GetAll()
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = this._configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -60,8 +53,6 @@ namespace ToolManagementApp.Entity
                 }
             }
             return table;
-
-
         }
 
         public DataTable Post(Items item)
@@ -87,12 +78,9 @@ namespace ToolManagementApp.Entity
             }
 
             return table;
-
-
         }
 
-
-        public DataTable Put (Items item)
+        public DataTable Put(Items item)
         {
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
@@ -114,13 +102,8 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-                    return table;
-
-
-
-
+            return table;
         }
-
 
         public DataTable Delete(int id)
         {
@@ -140,12 +123,7 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
-
-
-
         }
-
     }
 }

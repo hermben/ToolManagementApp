@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ToolManagementApp.Entity
 {
     public class ItemTypesEntity
     {
-
-
-
         string GetAllQuery = @"select ItemTypeID, ItemTypeName from dbo.ItemTypes";
 
         string PostQuery = @"insert into dbo.ItemTypes
@@ -30,7 +22,6 @@ namespace ToolManagementApp.Entity
         string DeleteQuery = @"delete from dbo.ItemTypes
                             where ItemTypeID= @ItemTypeID
                                 ";
-
 
 
         private readonly IConfiguration _configuration;
@@ -56,14 +47,11 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
-
         public DataTable Post(ItemTypes itemtyp)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -79,7 +67,6 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
@@ -102,13 +89,11 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
         public DataTable Delete(int id)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -124,12 +109,7 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
-
-
         }
-
-
     }
 }

@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
 using ToolManagementApp.Entity;
@@ -35,7 +28,7 @@ namespace ToolManagementApp.Controllers
         [HttpPost]
         public JsonResult Post(Checkouts checkout)
         {
-             this.checkoutEntity.Post(checkout);
+            this.checkoutEntity.Post(checkout);
 
             return new JsonResult("Posted Successfully");
         }
@@ -50,7 +43,7 @@ namespace ToolManagementApp.Controllers
 
         [HttpDelete("{id}")]
         public JsonResult Delete(int id)
-        {                 
+        {
             this.checkoutEntity.Delete(id);
 
             return new JsonResult("Posted Successfully");

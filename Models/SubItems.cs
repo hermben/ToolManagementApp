@@ -16,7 +16,5 @@ namespace ToolManagementApp.Models
         public string subItemName { get; set; }
 
         public string subItemDescription { get; set; }
-
-      
     }
 }

@@ -1,11 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
 using ToolManagementApp.Entity;
@@ -21,7 +14,7 @@ namespace ToolManagementApp.Controllers
         public ItemsController(IConfiguration configuration)
         {
             _configuration = configuration;
-           itemEntity = new ItemsEntity(configuration);
+            itemEntity = new ItemsEntity(configuration);
         }
 
         [HttpGet]
@@ -45,13 +38,11 @@ namespace ToolManagementApp.Controllers
             return new JsonResult("Posted Successfully");
         }
 
-        [HttpDelete ("{id}")]
-        public JsonResult Delete (int id)
+        [HttpDelete("{id}")]
+        public JsonResult Delete(int id)
         {
             this.itemEntity.Delete(id);
             return new JsonResult("Posted Successfully");
-
-
         }
     }
 }

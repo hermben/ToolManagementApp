@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using ToolManagementApp.Models;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace ToolManagementApp.Entity
 {
     public class SubItemsEntity
     {
-
         string GetAllQuery = @"select SubItemID, SubItemName,SubItemDescription from dbo.SubItems";
 
 
@@ -39,7 +34,6 @@ namespace ToolManagementApp.Entity
 
         public DataTable GetAll()
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -54,7 +48,6 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
@@ -76,13 +69,11 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
         public DataTable Put(SubItems subitem)
         {
-
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("datatoolDB");
             SqlDataReader myReader;
@@ -100,7 +91,6 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
 
@@ -121,9 +111,7 @@ namespace ToolManagementApp.Entity
                     myCon.Close();
                 }
             }
-
             return table;
         }
-
     }
 }
