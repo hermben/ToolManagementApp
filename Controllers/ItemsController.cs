@@ -24,6 +24,14 @@ namespace ToolManagementApp.Controllers
             return new JsonResult(items);
         }
 
+        [HttpGet]
+        [Route("GetAvailable")]
+        public JsonResult GetAvailable()
+        {
+            var items = this.itemEntity.GetAvailable();
+            return new JsonResult(items);
+        }
+
         [HttpPost]
         public JsonResult Post(Items item)
         {

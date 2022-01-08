@@ -18,6 +18,14 @@ namespace ToolManagementApp.Entity
                             update dbo.Checkouts
                              set IsCheckin = 1
                             where CheckoutID= @CheckoutID;
+
+                            UPDATE dbo.items
+                            SET IsCheckout = 0
+                            WHERE ItemID IN (
+                                SELECT ItemID 
+                                FROM dbo.Checkouts 
+                                WHERE dbo.Checkouts.CheckoutID = @CheckoutID
+                            );
                                 ";
         string PutQuery = @"update dbo.Checkins
                              set UserSignature = @UserSignature

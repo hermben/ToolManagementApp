@@ -10,6 +10,11 @@ namespace ToolManagementApp.Entity
         string GetAllQuery = @"SELECT Items.ItemTypeID, ItemTypes.ItemTypeName,Items.ItemName, Items.ItemID, Items.ItemSerial,Items.ItemDescription,Items.IsCheckout 
             FROM dbo.Items inner join dbo.ItemTypes ON ItemTypes.ItemTypeID = Items.ItemTypeID";
 
+
+        string GetAvailableQuery = @"SELECT Items.ItemTypeID, ItemTypes.ItemTypeName,Items.ItemName, Items.ItemID, Items.ItemSerial,Items.ItemDescription,Items.IsCheckout 
+            FROM dbo.Items inner join dbo.ItemTypes ON ItemTypes.ItemTypeID = Items.ItemTypeID
+            WHERE IsCheckout = 0";
+
         string PostQuery = @"insert into dbo.Items
                                     (ItemName,ItemSerial,ItemDescription,IsCheckout,ItemTypeID)
                             values (@ItemName,@ItemSerial,@ItemDescription,@IsCheckout,@ItemTypeID)
@@ -45,6 +50,24 @@ namespace ToolManagementApp.Entity
             {
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(GetAllQuery, myCon))
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return table;
+        }
+        public DataTable GetAvailable()
+        {
+            DataTable table = new DataTable();
+            string sqlDataSource = this._configuration.GetConnectionString("datatoolDB");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(GetAvailableQuery, myCon))
                 {
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
