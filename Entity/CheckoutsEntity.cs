@@ -9,7 +9,7 @@ namespace ToolManagementApp.Entity
     public class CheckoutsEntity
     {
 
-        string GetAllQuery = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,checkouts.UserName, checkouts.UserEmail, Checkins.CheckinTime,Checkins.UserSignature
+        string GetAllQuery = @"SELECT Checkouts.CheckoutID,Checkouts.CheckoutTime,Checkouts.IsCheckin,Items.ItemID,Items.ItemName,Items.ItemSerial,checkouts.UserName, checkouts.UserEmail, Checkins.CheckinTime,Checkins.UserSignature
                             FROM dbo.checkouts
 	                            inner join dbo.Items 
 		                            ON Items.ItemID=checkouts.ItemID
